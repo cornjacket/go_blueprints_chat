@@ -4,3 +4,11 @@ go programming blue prints chat app
 p14 use of lazy loading via the sync.Once mechanism. Prior to serving the first request for the template, the template will be compiled. useful in cases where there is a lot of preliminary calculations that are not necessary on program start.
 
 p.18 use of gorilla/websocket package to implement websockets
+
+p.18-19 room module's use of join and leave channels allow safe sharing of common map for concurrent goroutines.
+
+p.20 shows a different way to use select. the forward channel receives a message which causes the room to iterate through all the clients and send the message to each. however the code uses a select statement with a case that sends the msg to the client's send channel. the default case handles removing the client from the clients map. the defeault case behaves like an exception case. however it is unclear why a select statement is being used since the purpose is not to wait for a msg to be received but instead to send a msg to the client. why not simply have a if (send) command with the error condition handled via an else. This looks like a special use of the select statement.
+
+p.21 add ServeHTTP handler for room type. room can now act as a handler. code upgrades the HTTP connection using the websocket.Upgrader type.
+
+p22 update main to reflect /room path as well as kicking room off
