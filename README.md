@@ -12,3 +12,5 @@ p.20 shows a different way to use select. the forward channel receives a message
 p.21 add ServeHTTP handler for room type. room can now act as a handler. code upgrades the HTTP connection using the websocket.Upgrader type.
 
 p22 update main to reflect /room path as well as kicking room off
+
+Tested on localhost:8082 and gcloud:8082.
