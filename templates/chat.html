@@ -19,7 +19,7 @@
         var socket = null;
 	var msgBox = $("#chatbox textarea");
 	var messages = $("#messages");
-	$("#chatbox').submit(function() {
+	$("#chatbox").submit(function() {
           if (!msgBox.val()) return false;
 	  if (!socket) {
             alert("Error: There is no socket connection.");
@@ -27,17 +27,18 @@
 	  }
 	  socket.send(msgBox.val());
 	  msgBox.val("");
-	  retur false;
+	  return false;
 	});
         if (!window["WebSocket"]) {
           alert("Error: Your browser does not support web sockets.")
         } else {
-          socket = new WebSocket("ws://35.193.179.139:8080/room");
+          socket = new WebSocket("ws://35.193.179.139:8082/room");
+          //socket = new WebSocket("ws://localhost:8082/room");
 	  socket.onclose = function() {
             alert("Connection has been closed.");
 	  }
 	  socket.onmessage = function(e) {
-            message.append($("<li>").text(e.data));
+            messages.append($("<li>").text(e.data));
           }
         }
       });
