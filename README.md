@@ -14,3 +14,7 @@ p.21 add ServeHTTP handler for room type. room can now act as a handler. code up
 p22 update main to reflect /room path as well as kicking room off
 
 Tested on localhost:8082 and gcloud:8082.
+
+p.38 add trace package using interfaces. allows tracing during test that is disabled during deployment by having defeault nil tracer.
+
+p.39 take away - using web sockets allows communication with the client without messy polling. Research this.

@@ -7,8 +7,8 @@ import (
   "text/template"
   "path/filepath"
   "sync"
-  "os"
-  "github.com/cornjacket/trace"
+  //"os"
+  //"github.com/cornjacket/trace"
 )
 
 // templ represents a signle template
@@ -30,7 +30,7 @@ func main() {
   var addr = flag.String("addr", ":8082", "The addr of the application.")
   flag.Parse() // parse the flags
   r := newRoom()
-  r.tracer = trace.New(os.Stdout)
+  //r.tracer = trace.New(os.Stdout) // only used for test tracing
   http.Handle("/", &templateHandler{filename: "chat.html"})
   http.Handle("/room", r)
   // get the room going
