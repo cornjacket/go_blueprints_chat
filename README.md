@@ -18,3 +18,5 @@ Tested on localhost:8082 and gcloud:8082.
 p.38 add trace package using interfaces. allows tracing during test that is disabled during deployment by having defeault nil tracer.
 
 p.39 take away - using web sockets allows communication with the client without messy polling. Research this.
+
+p.48 /login page that gives various authentication paths. Dynamic path functionality that is stubbed, /auth/login/provider.
