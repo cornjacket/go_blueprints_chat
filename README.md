@@ -24,3 +24,5 @@ p.48 /login page that gives various authentication paths. Dynamic path functiona
 p.54 w.Header.Set looks like a typo. It should be w.Header().Set
 
 p.58 added authentication using google. facebook and github are non-functional paths.
+
+p.64 add username and when into message forwarded to each client. Defined chan of message type to forward from room to client.
