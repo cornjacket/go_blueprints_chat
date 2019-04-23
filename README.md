@@ -20,3 +20,7 @@ p.38 add trace package using interfaces. allows tracing during test that is disa
 p.39 take away - using web sockets allows communication with the client without messy polling. Research this.
 
 p.48 /login page that gives various authentication paths. Dynamic path functionality that is stubbed, /auth/login/provider.
+
+p.54 w.Header.Set looks like a typo. It should be w.Header().Set
+
+p.58 added authentication using google. facebook and github are non-functional paths.

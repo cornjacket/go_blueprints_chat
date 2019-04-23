@@ -9,6 +9,10 @@ import (
   "sync"
   //"os"
   //"github.com/cornjacket/trace"
+  "github.com/stretchr/gomniauth"
+  "github.com/stretchr/signature"
+  "github.com/stretchr/objx"
+  "github.com/stretchr/gomniauth/providers/google"
 )
 
 // templ represents a signle template
@@ -23,12 +27,22 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
   t.once.Do(func() {
     t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
   })
-  t.templ.Execute(w, r)
+  data := map[string]interface{}{
+    "Host": r.Host,
+  }
+  if authCookie, err := r.Cookie("auth"); err == nil {
+    data["UserData"] = objx.MustFromBase64(authCookie.Value)
+  }
+  t.templ.Execute(w, data)
 }
 
 func main() {
   var addr = flag.String("addr", ":8082", "The addr of the application.")
   flag.Parse() // parse the flags
+  // setup gomniauth
+  gomniauth.SetSecurityKey(signature.RandomKey(64))
+  gomniauth.WithProviders( google.New("1039434619377-fnfcgtdrhj82ssto8q95s9jqhfms5d73.apps.googleusercontent.com", "hm12hOSAM8HeAElysMiGx-vd", "http://localhost:8082/auth/callback/google") )
+
   r := newRoom()
   //r.tracer = trace.New(os.Stdout) // only used for test tracing
   //http.Handle("/", &templateHandler{filename: "chat.html"})
