@@ -8,7 +8,7 @@ type client struct {
   // socket is the web socket for this client.
   socket *websocket.Conn
   // send is a channel on which messages are sent
-  send chan *message 
+  send chan *message
   // room is the room this client is chatting in.
   room *room
   // userData holds information about the user
@@ -25,6 +25,9 @@ func (c *client) read() {
     }
     msg.When = time.Now()
     msg.Name = c.userData["name"].(string)
+    if avatarURL, ok := c.userData["avatar_url"]; ok {
+      msg.AvatarURL = avatarURL.(string)
+    }
     c.room.forward <- msg
   }
 }
