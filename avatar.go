@@ -40,3 +40,17 @@ func (AuthAvatar) GetAvatarURL(c *client) (string, error) {
     return urlStr, nil
   }
 }
+
+type GravatarAvatar struct{}
+
+var UseGravatar GravatarAvatar
+
+// todo: could restructure this due to bad line of sight 
+func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
+  if userid, ok := c.userData["userid"]; ok {
+    if useridStr, ok := userid.(string); ok {
+      return "//www.gravatar.com/avatar/" + useridStr, nil
+    }
+  }
+  return "", ErrNoAvatarURL
+}
