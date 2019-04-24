@@ -43,10 +43,10 @@ func main() {
   gomniauth.SetSecurityKey(signature.RandomKey(64))
   gomniauth.WithProviders( google.New("1039434619377-fnfcgtdrhj82ssto8q95s9jqhfms5d73.apps.googleusercontent.com", "hm12hOSAM8HeAElysMiGx-vd", "http://localhost:8082/auth/callback/google") )
 
-  r := newRoom(UseGravatar)
+  r := newRoom(UseFileSystemAvatar)
+  //r := newRoom(UseGravatar)
   //r := newRoom(UseAuthAvatar)
   //r.tracer = trace.New(os.Stdout) // only used for test tracing
-  //http.Handle("/", &templateHandler{filename: "chat.html"})
   http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
   http.Handle("/login", &templateHandler{filename: "login.html"})
   http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +63,9 @@ func main() {
   http.Handle("/room", r)
   http.Handle("/upload", &templateHandler{filename: "upload.html"})
   http.HandleFunc("/uploader", uploaderHandler)
+  http.Handle("/avatars/",
+    http.StripPrefix("/avatars/",
+      http.FileServer(http.Dir("./avatars"))))
   // get the room going
   go r.run()
   // start the web server
