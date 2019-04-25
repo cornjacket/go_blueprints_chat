@@ -15,6 +15,9 @@ import (
   "github.com/stretchr/gomniauth/providers/google"
 )
 
+// set the active Avatar implementation
+var avatars Avatar = UseFileSystemAvatar
+
 // templ represents a signle template
 type templateHandler struct {
   once     sync.Once
@@ -43,7 +46,8 @@ func main() {
   gomniauth.SetSecurityKey(signature.RandomKey(64))
   gomniauth.WithProviders( google.New("1039434619377-fnfcgtdrhj82ssto8q95s9jqhfms5d73.apps.googleusercontent.com", "hm12hOSAM8HeAElysMiGx-vd", "http://localhost:8082/auth/callback/google") )
 
-  r := newRoom(UseFileSystemAvatar)
+  r := newRoom()
+  //r := newRoom(UseFileSystemAvatar)
   //r := newRoom(UseGravatar)
   //r := newRoom(UseAuthAvatar)
   //r.tracer = trace.New(os.Stdout) // only used for test tracing

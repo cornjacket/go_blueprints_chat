@@ -1,5 +1,5 @@
 chat
-./avatars
+./avatars/*
 
 # Binaries for programs and plugins
 *.exe

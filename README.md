@@ -26,3 +26,5 @@ p.54 w.Header.Set looks like a typo. It should be w.Header().Set
 p.58 added authentication using google. facebook and github are non-functional paths.
 
 p.64 add username and when into message forwarded to each client. Defined chan of message type to forward from room to client.
+
+p.98 Purposely not implementing combining all three implementations since I don't see much value. So far I can leverage this existing code base for web socket related work, authentication, and for file upload.

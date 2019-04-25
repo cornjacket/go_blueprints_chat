@@ -6,10 +6,25 @@ import (
   "fmt"
   "io"
   "crypto/md5"
-  //"log"
+  "log"
   "github.com/stretchr/gomniauth"
   "github.com/stretchr/objx"
+  gomniauthcommon "github.com/stretchr/gomniauth/common"
 )
+
+type ChatUser interface {
+  UniqueID() string
+  AvatarURL() string
+}
+
+type chatUser struct {
+  gomniauthcommon.User
+  uniqueID string
+}
+
+func (u chatUser) UniqueID() string {
+  return u.uniqueID
+}
 
 type authHandler struct {
   next http.Handler
@@ -75,14 +90,19 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Printf("auth: user.Name = %s\n", user.Name())
+    chatUser := &chatUser{User: user}
     m := md5.New()
     io.WriteString(m, strings.ToLower(user.Email()))
-    userId := fmt.Sprintf("%x", m.Sum(nil))
+    chatUser.uniqueID = fmt.Sprintf("%x", m.Sum(nil))
+    avatarURL, err := avatars.GetAvatarURL(chatUser)
+    if err != nil {
+      log.Fatalln("Error when trying to GetAvatarURL", "-", err)
+    }
     authCookieValue := objx.New(map[string]interface{}{
-      "userid": userId,
+      "userid": chatUser.uniqueID,
       "name": user.Name(),
-      "avatar_url": user.AvatarURL(),
-      "email": user.Email(),
+      "avatar_url": avatarURL,
+      "email": user.Email(), // don't think this is needed...
     }).MustBase64()
     http.SetCookie(w, &http.Cookie{
       Name: "auth",
